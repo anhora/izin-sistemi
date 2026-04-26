@@ -52,7 +52,7 @@
 
         // 2. Onayla/Reddet butonları için fonksiyon
         async function durumGuncelle(id, yeniDurum) {
-            await fetch(`http://localhost:5000/izin-durum/${id}`, {
+            await fetch(`https://izin-sistemi-kho6.onrender.com/izin-durum/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ durum: yeniDurum })

@@ -67,7 +67,7 @@
             const veri = { adSoyad, tur, baslangic, bitis, aciklama };
 
             // API'ye gönderiyoruz
-            const response = await fetch('http://localhost:5000/izin-talep', {
+            const response = await fetch('https://izin-sistemi-kho6.onrender.com/izin-talep', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(veri)
