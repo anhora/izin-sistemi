@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1777154127940,
+    "adSoyad": "ahemt",
+    "tur": "Mazeret",
+    "baslangic": "2026-04-26",
+    "bitis": "2026-06-30",
+    "aciklama": "sıkılmış",
+    "durum": "Onaylandı"
+  },
+  {
+    "id": 1777155139522,
+    "adSoyad": "memet bıcak",
+    "tur": "Yıllık İzin",
+    "baslangic": "2026-04-26",
+    "bitis": "2026-05-15",
+    "aciklama": "izin",
+    "durum": "Reddedildi"
+  },
+  {
+    "id": 1777165786464,
+    "adSoyad": "rrabdrurrsrsr",
+    "tur": "Sağlık İzni",
+    "baslangic": "2025-02-22",
+    "bitis": "3200-03-22",
+    "aciklama": "rrr",
+    "durum": "Onaylandı"
+  }
+]

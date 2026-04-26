@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personel İzin Sistemi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+
+    <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">İzin Talep Formu</h2>
+        
+        <form id="izinForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium">Ad Soyad</label>
+                <input type="text" id="adSoyad" required class="w-full border p-2 rounded">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">İzin Türü</label>
+                <select id="tur" class="w-full border p-2 rounded">
+                    <option value="Yıllık İzin">Yıllık İzin</option>
+                    <option value="Sağlık İzni">Sağlık İzni</option>
+                    <option value="Mazeret">Mazeret</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium">Başlangıç</label>
+                    <input type="date" id="baslangic" required class="w-full border p-2 rounded">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Bitiş</label>
+                    <input type="date" id="bitis" required class="w-full border p-2 rounded">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Açıklama</label>
+                <textarea id="aciklama" class="w-full border p-2 rounded"></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition">
+                Talebi Gönder
+            </button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('izinForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const adSoyad = document.getElementById('adSoyad').value;
+            const tur = document.getElementById('tur').value;
+            const baslangic = document.getElementById('baslangic').value;
+            const bitis = document.getElementById('bitis').value;
+            const aciklama = document.getElementById('aciklama').value;
+
+            // Tarih Doğrulaması (Validation)
+            if (new Date(baslangic) > new Date(bitis)) {
+                alert("Hata: Başlangıç tarihi bitiş tarihinden sonra olamaz!");
+                return;
+            }
+
+            const veri = { adSoyad, tur, baslangic, bitis, aciklama };
+
+            // API'ye gönderiyoruz
+            const response = await fetch('http://localhost:5000/izin-talep', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(veri)
+            });
+
+            if (response.ok) {
+                alert("İzin talebi başarıyla gönderildi!");
+                e.target.reset(); // Formu temizle
+            }
+        });
+    </script>
+</body>
+</html>

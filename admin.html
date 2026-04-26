@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Yönetici Paneli - İzin Talepleri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold mb-6 text-gray-800">Gelen İzin Talepleri</h2>
+        
+        <div id="izinListesi" class="grid gap-4">
+            </div>
+    </div>
+
+    <script>
+        // 1. Talepleri API'den çekme fonksiyonu
+        async function izinleriGetir() {
+            const response = await fetch('http://localhost:5000/izinler');
+            const izinler = await response.json();
+            
+            const listeDiv = document.getElementById('izinListesi');
+            listeDiv.innerHTML = ''; // Listeyi temizle
+
+            izinler.forEach(izin => {
+                const kart = document.createElement('div');
+                kart.className = "bg-white p-4 rounded-lg shadow flex justify-between items-center";
+                
+                // Duruma göre renk belirle
+                let durumRengi = "text-yellow-600";
+                if(izin.durum === "Onaylandı") durumRengi = "text-green-600";
+                if(izin.durum === "Reddedildi") durumRengi = "text-red-600";
+
+                kart.innerHTML = `
+                    <div>
+                        <p class="font-bold text-lg">${izin.adSoyad}</p>
+                        <p class="text-sm text-gray-600">${izin.tur} | ${izin.baslangic} / ${izin.bitis}</p>
+                        <p class="text-xs italic text-gray-500">${izin.aciklama || 'Açıklama yok'}</p>
+                        <p class="font-semibold ${durumRengi}">Durum: ${izin.durum}</p>
+                    </div>
+                    <div class="space-x-2">
+                        ${izin.durum === 'Beklemede' ? `
+                            <button onclick="durumGuncelle(${izin.id}, 'Onaylandı')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Onayla</button>
+                            <button onclick="durumGuncelle(${izin.id}, 'Reddedildi')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Reddet</button>
+                        ` : ''}
+                    </div>
+                `;
+                listeDiv.appendChild(kart);
+            });
+        }
+
+        // 2. Onayla/Reddet butonları için fonksiyon
+        async function durumGuncelle(id, yeniDurum) {
+            await fetch(`http://localhost:5000/izin-durum/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ durum: yeniDurum })
+            });
+            izinleriGetir(); // Listeyi anlık güncelle
+        }
+
+        // Sayfa açıldığında verileri getir
+        izinleriGetir();
+    </script>
+</body>
+</html>
